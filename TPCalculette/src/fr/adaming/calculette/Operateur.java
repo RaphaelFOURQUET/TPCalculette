@@ -23,7 +23,7 @@ public enum Operateur {
 	//Constructeur  
 	/**
 	 * Constructeyr Operateur
-	 * @param symbole
+	 * @param symbole Symbole
 	 */
 	Operateur(String symbole){
 		this.symbole = symbole;

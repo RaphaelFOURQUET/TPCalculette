@@ -34,6 +34,7 @@ public class Calculette extends Observable {
 	//Méthodes
 	/**
 	 * Concatene le nouveau chiffre(ou point) à la chaine representant notre nombre.
+	 * @param s String représentant le nombre tapé.
 	 */
 	protected void addChiffre(String s) {
 		if(update) {
