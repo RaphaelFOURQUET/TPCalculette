@@ -134,7 +134,8 @@ public class Calculette extends Observable {
 			} catch(ArithmeticException e) {
 				//Non declenche par division flottante.
 				System.out.println("ArithmeticException");
-				nb1 = "Error / by 0";
+				nb1 = "Error / by 0";	//Pour affichage
+				//Soft Reset
 				this.clicOperateur = false;
 				this.operateur = Operateur.NoOp;
 				this.update = true;
