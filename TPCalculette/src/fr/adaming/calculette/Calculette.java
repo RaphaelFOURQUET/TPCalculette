@@ -82,6 +82,7 @@ public class Calculette extends Observable {
 			try {
 				nombre1 = Double.valueOf(nb1);
 			} catch(NumberFormatException e) {
+				//Dans le cas ou on avait affiche une erreur sur ecran calculette (/ par 0)
 				nombre1 = 0;
 			}
 			//nb1 = "0";	//reset afffichage
