@@ -79,7 +79,11 @@ public class Calculette extends Observable {
 
 		}
 		else {	//premier operateur cliqué
-			nombre1 = Double.valueOf(nb1);
+			try {
+				nombre1 = Double.valueOf(nb1);
+			} catch(NumberFormatException e) {
+				nombre1 = 0;
+			}
 			//nb1 = "0";	//reset afffichage
 		}
 
@@ -110,25 +114,34 @@ public class Calculette extends Observable {
 	private void calculer(){
 		if(operateur == Operateur.PLUS){
 			nombre1 = nombre1 + Double.valueOf(nb1);
+			nb1 = String.valueOf(nombre1);	//Affichage à update
 		}
 		else if(operateur == Operateur.MOINS){
 			nombre1 = nombre1 - Double.valueOf(nb1);
+			nb1 = String.valueOf(nombre1);	//Affichage à update
 		}
 		else if(operateur == Operateur.MULT){
 			nombre1 = nombre1 * Double.valueOf(nb1);
+			nb1 = String.valueOf(nombre1);	//Affichage à update
 		}
 		else if(operateur == Operateur.DIV){
 			try{
 				Double d = Double.valueOf(nb1);
-				if(d == 0) {	//TODO Gestion du /0
-					System.out.println("Division by 0  : End of the world !");
+				if(d == 0) {	//Gestion du /0
+					throw new ArithmeticException();
 				}
 				nombre1 = nombre1 / d;
 			} catch(ArithmeticException e) {
 				//Non declenche par division flottante.
+				System.out.println("ArithmeticException");
+				nb1 = "Error / by 0";
+				this.clicOperateur = false;
+				this.operateur = Operateur.NoOp;
+				this.update = true;
+				this.nombre1 = 0;
 			}
 		}
-		nb1 = String.valueOf(nombre1);	//Affichage à update
+		//nb1 = String.valueOf(nombre1);	//Affichage à update
 	}
 
 	/**
