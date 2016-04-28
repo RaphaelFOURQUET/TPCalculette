@@ -63,6 +63,7 @@ public class Calculette extends Observable {
 
 	/**
 	 * Reinitialise valeurs par defaut
+	 * @param str Affichage ecran calculette.
 	 */
 	protected void reset(String str) {
 		this.isLastClicOperator = false;
