@@ -8,7 +8,7 @@ package fr.adaming.calculette;
  *	Enumeration des operateurs de ma calculette.
  */
 public enum Operateur {
-	NoOp(""),
+	NoOp(""),	//RFRF : pertinent ?
 	PLUS("+"),
 	MOINS("*"),
 	MULT("*"),

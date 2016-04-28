@@ -185,10 +185,10 @@ public class VueCalculette extends JFrame {
 	 *
 	 */
 	class ChiffreListener implements ActionListener {
-		public void actionPerformed(ActionEvent e){
+		public void actionPerformed(ActionEvent event){
 
 			//On modifie calculette en recuperant le chiffre associe au Button.
-			calculette.addChiffre(((JButton)e.getSource()).getText());
+			calculette.addChiffre(((JButton)event.getSource()).getText());
 		}
 	}
 
@@ -254,7 +254,7 @@ public class VueCalculette extends JFrame {
 	class ResetListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0){
 			//reset
-			calculette.reset();
+			calculette.reset("0");
 		}
 	}
 

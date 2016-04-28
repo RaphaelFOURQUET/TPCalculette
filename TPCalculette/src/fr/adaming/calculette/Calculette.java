@@ -12,6 +12,11 @@ import java.util.Observable;
 public class Calculette extends Observable {
 
 	/**
+	 * Booléen qui permet de savoir si le dernier clic est un opérateur.
+	 */
+	protected boolean isLastClicOperator = false;
+
+	/**
 	 * Booléen pour savoir si un opérateur a été sélectionné
 	 */
 	protected boolean clicOperateur = false;
@@ -51,19 +56,21 @@ public class Calculette extends Observable {
 					this.nb1 = nb1+s;
 			}
 		}
-		
+		this.isLastClicOperator = false;
+
 		this.informerObserver();
 	}
 
 	/**
 	 * Reinitialise valeurs par defaut
 	 */
-	protected void reset() {
+	protected void reset(String str) {
+		this.isLastClicOperator = false;
 		this.clicOperateur = false;
 		this.operateur = Operateur.NoOp;
 		this.update = true;
 		this.nombre1 = 0;
-		this.nb1 = "0";
+		this.nb1 = str;
 
 		this.informerObserver();
 
@@ -74,27 +81,33 @@ public class Calculette extends Observable {
 	 * @param o Operateur cliqué.
 	 */
 	protected void appuiOperateur(Operateur o) {
-		if(clicOperateur) {	//Si deja un operateur
-			calculer();
-
-		}
-		else {	//premier operateur cliqué
-			try {
-				nombre1 = Double.valueOf(nb1);
-			} catch(NumberFormatException e) {
-				//Dans le cas ou on avait affiche une erreur sur ecran calculette (/ par 0)
-				nombre1 = 0;
+		//RFRF : gestion appui sur 2 operateurs différents à la suite + gestion nombre negatifs.
+		//SI on vient d appuyer sur un operateur, on doit juste le modifier ?
+		if(isLastClicOperator)
+			operateur = o;
+		else {
+			if(clicOperateur) {	//Si deja un operateur
+				calculer();
 			}
-			//nb1 = "0";	//reset afffichage
-		}
+			else {	//premier operateur cliqué
+				try {
+					nombre1 = Double.valueOf(nb1);
+				} catch(NumberFormatException e) {
+					//Dans le cas ou on avait affiche une erreur sur ecran calculette (comme / par 0)
+					nombre1 = 0;
+				}
+				//nb1 = "0";	//reset afffichage
+			}
 
-		update = true;	//declencher update affichage 
-		operateur = o;
-		clicOperateur = true;
+			update = true;	//declencher update affichage 
+			operateur = o;
+			clicOperateur = true;
+		}
+		this.isLastClicOperator = true;
 
 		informerObserver();
 	}
-	
+
 	/**
 	 * Action réalisée apres un appui sur =.
 	 */
@@ -104,9 +117,10 @@ public class Calculette extends Observable {
 		clicOperateur = false;
 		update = true;
 		operateur = Operateur.NoOp;
-		
+		this.isLastClicOperator = false;
+
 		informerObserver();
-		
+
 	}
 
 	/**
@@ -129,18 +143,12 @@ public class Calculette extends Observable {
 			try{
 				Double d = Double.valueOf(nb1);
 				if(d == 0) {	//Gestion du /0
-					throw new ArithmeticException();
+					throw new ArithmeticException();	//Non declenche par division flottante par defaut.
 				}
 				nombre1 = nombre1 / d;
 			} catch(ArithmeticException e) {
-				//Non declenche par division flottante.
 				System.out.println("ArithmeticException");
-				nb1 = "Error / by 0";	//Pour affichage
-				//Soft Reset
-				this.clicOperateur = false;
-				this.operateur = Operateur.NoOp;
-				this.update = true;
-				this.nombre1 = 0;
+				reset("Error / by 0");	//Pour affichage
 			}
 		}
 		//nb1 = String.valueOf(nombre1);	//Affichage à update
